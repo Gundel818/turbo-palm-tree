@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([0, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var data = {{ data | tojson | safe }};
+
+    data.forEach(function (point) {
+        if (point.coordonnees && point.coordonnees.length === 2) { // Vérifie si les coordonnées sont définies et ont la bonne longueur
+            L.marker(point.coordonnees).addTo(map)
+                .bindPopup('Nom: ' + point.adm_lb_nom + '<br> Génération: ' + point.generation + '<br> Fréquences : ' + point.emr_lb_systeme.join(', '));
+        }
+        else{
+            console.log("Problème avec ", point.coordonnees)
+        }
+    });
+</script>
+
+</body>
+</html>
