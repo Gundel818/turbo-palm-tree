@@ -4,8 +4,8 @@ class FileChooser:
     def __init__(self) -> None:
         pass
 
-    def choosingFile(self) -> str :
-        dir = os.getcwd() + "/input"
+    def choosingFile(self, dir : str) -> str :
+        dir = os.getcwd() + "/" + dir
         files = {}
         for i, file in enumerate(os.listdir(dir), start=1):
             if file.endswith('.csv'):
